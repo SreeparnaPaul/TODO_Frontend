@@ -36,3 +36,18 @@
     transform: rotate(360deg);
   }
 }
+
+.wrap {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.registrationCard {
+  width: 100%;
+  max-width: 500px;
+  padding: 20px;
+  border: 1px solid #c9c6c6;
+  box-shadow: 5px 5px 5px #e0dcdc;
+  border-radius: 15px;
+}
