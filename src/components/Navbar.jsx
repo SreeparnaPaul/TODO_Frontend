@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import UserApi from "../network/UserApi";
 import { useNavigate } from "react-router-dom";
 
@@ -96,6 +97,7 @@ export default function Navbar() {
           >
             TODO-APP
           </Typography>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
           <Button
             style={{ color: "black" }}
             onClick={(e) => {
