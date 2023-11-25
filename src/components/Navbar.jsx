@@ -1,20 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
 import AppBar from "@mui/material/AppBar";
 import Container from "@mui/material/Container";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { useNavigate } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
-import Avatar from "@mui/material/Avatar";
 import MenuItem from "@mui/material/MenuItem";
+import UserApi from "../network/UserApi";
+import { useNavigate } from "react-router-dom";
+import AddTask from "./modals/AddTask";
 
 
 export default function Navbar() {
-//   const navigate = useNavigate();
+  
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -25,9 +26,11 @@ export default function Navbar() {
   };
 
   const token = JSON.parse(localStorage.getItem("token"));
-  const userData = JSON.parse(localStorage.getItem("userData"));
+  const username = JSON.parse(localStorage.getItem("userName"));
+  const navigate =useNavigate()
+  const {logoutUser}=UserApi()
+  const [openAddTask,setOpenAddTask]=React.useState(false)
 
- 
 
   return (
     <AppBar
@@ -39,8 +42,6 @@ export default function Navbar() {
           <Typography
             variant="h6"
             noWrap
-            component="a"
-            href="/"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -82,16 +83,10 @@ export default function Navbar() {
                 display: { xs: "block", md: "none" },
               }}
             >
-              <MenuItem
-                onClick={(e) => {
-                  e.preventDefault();
-                 
-                }}
-              >
+              {openAddTask && <AddTask openModal={true} onClick={()=>setOpenAddTask(false)}/>}
+              <MenuItem onClick={()=>setOpenAddTask(true)}>
                 <Typography
                   textAlign="center"
-                //   component="a"
-                //   href="/listProperty"
                 >
                   <b>Add Task</b>
                 </Typography>
@@ -101,8 +96,6 @@ export default function Navbar() {
           <Typography
             variant="h5"
             noWrap
-            component="a"
-            href="/"
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -118,37 +111,37 @@ export default function Navbar() {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <Button
-              onClick={(e) => {
-                e.preventDefault();
-               
-              }}
+              onClick={()=>setOpenAddTask(true)}
               sx={{ color: "black" }}
             >
               <b>Add Task</b>
             </Button>
           </Box>      
-          {!token ? (
-            <Button
-              style={{ color: "black" }}
-              onClick={(e) => {
-                e.preventDefault();
-                // navigate("/login");
-              }}
-            >
-              <b>Sign In</b>
-            </Button>
-          ) : (
-            <Avatar  />
-          )}
+          
           <Button
               style={{ color: "black" }}
               onClick={(e) => {
                 e.preventDefault();
-                // navigate("/login");
+                logoutUser()
               }}
             >
               <b>Log Out</b>
             </Button>
+            {!token ? (
+            <Button
+              style={{ color: "black" }}
+              onClick={(e)=>{e.preventDefault()
+              navigate('/')}}
+            >
+              <b>Sign In</b>
+            </Button>
+          ) : (
+            <Button
+              style={{ color: "black" }}
+            >
+              <b>{username}</b>
+            </Button>
+          )}
         </Toolbar>
       </Container>
     </AppBar>
