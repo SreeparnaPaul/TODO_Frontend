@@ -10,6 +10,7 @@ import {
   Paper,
   Tooltip,
   Button,
+  Pagination,
 } from "@mui/material";
 import { newDateChanger } from "../../utils/common";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
@@ -27,14 +28,27 @@ const TaskList = () => {
   const [openEditTask, setOpenEditTask] = React.useState(false);
   const [updateTaskObj, setUpdateTasObj] = React.useState();
   const [openAddTask, setOpenAddTask] = React.useState(false);
+  const [pagination, setPagination] = React.useState({
+    page: 1,
+    limit: 2,
+    total: 0,
+  });
+
+  const handleChange = (event, page) => {
+    setPagination({ ...pagination, page: page });
+  };
+
   const navigate = useNavigate();
   const token = JSON.parse(localStorage.getItem("token"));
   React.useEffect(() => {
     fetchAllTasks();
-  }, []);
+  }, [pagination?.page]);
   const fetchAllTasks = async () => {
     setLoading(true);
-    let apiUrl = `${process.env.REACT_APP_API_TASK}/getTasks`;
+
+    console.log("+-+-+-+-+- ", pagination.page);
+
+    let apiUrl = `${process.env.REACT_APP_API_TASK}/getTasks?page=${pagination.page}&limit=${pagination.limit}`;
 
     const headers = {
       Authorization: token,
@@ -44,7 +58,8 @@ const TaskList = () => {
       response = await axios.get(apiUrl, { headers });
 
       console.log("Backend response:", response);
-      setAllTasks(response?.data?.data);
+      setAllTasks(response?.data?.data?.taskList);
+      setPagination({ ...pagination, total: response?.data?.data?.total });
       setLoading(false);
     } catch (error) {
       console.error("Error fetching tasks:", error);
@@ -203,6 +218,16 @@ const TaskList = () => {
           </TableBody>
         </Table>
       </TableContainer>
+
+      {allTasks && allTasks?.length > 0 && (
+        <Pagination
+          count={Math.ceil(pagination.total / pagination.limit)}
+          onChange={handleChange}
+          showFirstButton
+          showLastButton
+          size="large"
+        />
+      )}
     </div>
   );
 };
