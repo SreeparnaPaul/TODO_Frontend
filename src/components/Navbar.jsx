@@ -8,14 +8,10 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import UserApi from "../network/UserApi";
 import { useNavigate } from "react-router-dom";
-import AddTask from "./modals/AddTask";
-
 
 export default function Navbar() {
-  
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -27,10 +23,8 @@ export default function Navbar() {
 
   const token = JSON.parse(localStorage.getItem("token"));
   const username = JSON.parse(localStorage.getItem("userName"));
-  const navigate =useNavigate()
-  const {logoutUser}=UserApi()
-  const [openAddTask,setOpenAddTask]=React.useState(false)
-
+  const navigate = useNavigate();
+  const { logoutUser, logoutUserFromAllDevice } = UserApi();
 
   return (
     <AppBar
@@ -51,7 +45,9 @@ export default function Navbar() {
               color: "inherit",
               textDecoration: "none",
             }}
-          > TODO-APP
+          >
+            {" "}
+            TODO-APP
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -82,16 +78,7 @@ export default function Navbar() {
               sx={{
                 display: { xs: "block", md: "none" },
               }}
-            >
-              {openAddTask && <AddTask openModal={true} onClick={()=>setOpenAddTask(false)}/>}
-              <MenuItem onClick={()=>setOpenAddTask(true)}>
-                <Typography
-                  textAlign="center"
-                >
-                  <b>Add Task</b>
-                </Typography>
-              </MenuItem>
-            </Menu>
+            ></Menu>
           </Box>
           <Typography
             variant="h5"
@@ -109,36 +96,36 @@ export default function Navbar() {
           >
             TODO-APP
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            <Button
-              onClick={()=>setOpenAddTask(true)}
-              sx={{ color: "black" }}
-            >
-              <b>Add Task</b>
-            </Button>
-          </Box>      
-          
           <Button
+            style={{ color: "black" }}
+            onClick={(e) => {
+              e.preventDefault();
+              logoutUserFromAllDevice();
+            }}
+          >
+            <b>Log Out From All Device</b>
+          </Button>
+          <Button
+            style={{ color: "black" }}
+            onClick={(e) => {
+              e.preventDefault();
+              logoutUser();
+            }}
+          >
+            <b>Log Out</b>
+          </Button>
+          {!token ? (
+            <Button
               style={{ color: "black" }}
               onClick={(e) => {
                 e.preventDefault();
-                logoutUser()
+                navigate("/");
               }}
-            >
-              <b>Log Out</b>
-            </Button>
-            {!token ? (
-            <Button
-              style={{ color: "black" }}
-              onClick={(e)=>{e.preventDefault()
-              navigate('/')}}
             >
               <b>Sign In</b>
             </Button>
           ) : (
-            <Button
-              style={{ color: "black" }}
-            >
+            <Button style={{ color: "black" }}>
               <b>{username}</b>
             </Button>
           )}

@@ -6,10 +6,9 @@ import { Form, Formik } from "formik";
 import { initialValues, validation } from "../utils/validation/LoginValidation";
 import axios from "axios";
 import TextFieldComponent from "../components/formFields/TextFieldComponent";
-import PasswordField from "../components/formFields/PasswordField"; 
+import PasswordField from "../components/formFields/PasswordField";
 import { SweetAlert } from "../components/library/SweetAlert";
 import { LoadingButton } from "../components/library/LoadingButton";
-
 
 const Login = () => {
   const [loader, setLoader] = useState(false);
@@ -34,10 +33,13 @@ const Login = () => {
 
         console.log("Backend response:", response.data);
         localStorage.setItem("token", JSON.stringify(response.data.data.token));
-        localStorage.setItem("userName", JSON.stringify(response.data.data.name));
+        localStorage.setItem(
+          "userName",
+          JSON.stringify(response.data.data.name)
+        );
         setLoader(false);
         SweetAlert("Success", "User logged in successfully", "success");
-        navigate("/dashboard");
+        navigate("/");
       } else {
         console.log("Form validation not satisfied, API call not made.");
       }
