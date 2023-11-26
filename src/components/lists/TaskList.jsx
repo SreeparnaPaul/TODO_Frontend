@@ -30,7 +30,7 @@ const TaskList = () => {
   const [openAddTask, setOpenAddTask] = React.useState(false);
   const [pagination, setPagination] = React.useState({
     page: 1,
-    limit: 2,
+    limit: 5,
     total: 0,
   });
 
