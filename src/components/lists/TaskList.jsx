@@ -119,7 +119,7 @@ const TaskList = () => {
     }
   };
   return (
-    <div>
+    <div className="list">
       <TableContainer component={Paper}>
         <LoadingButton loader={loading} />
         {openEditTask && updateTaskObj && (
@@ -137,7 +137,11 @@ const TaskList = () => {
             fetchAllTasks={fetchAllTasks}
           />
         )}
-        <Button onClick={() => setOpenAddTask(true)} variant="contained">
+       <Button
+          className="list"
+          onClick={() => setOpenAddTask(true)}
+          variant="contained"
+        >
           <b>Add Task</b>
         </Button>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -220,13 +224,15 @@ const TaskList = () => {
       </TableContainer>
 
       {allTasks && allTasks?.length > 0 && (
-        <Pagination
-          count={Math.ceil(pagination.total / pagination.limit)}
-          onChange={handleChange}
-          showFirstButton
-          showLastButton
-          size="large"
-        />
+       <div className="pagination">
+          <Pagination
+            count={Math.ceil(pagination.total / pagination.limit)}
+            onChange={handleChange}
+            showFirstButton
+            showLastButton
+            size="large"
+          />
+        </div>
       )}
     </div>
   );
