@@ -51,3 +51,12 @@
   box-shadow: 5px 5px 5px #e0dcdc;
   border-radius: 15px;
 }
+.pagination {
+  margin: 2rem;
+  display: flex;
+  justify-content: center;
+}
+.list {
+  margin: 2rem;
+}
+
